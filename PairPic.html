@@ -1,0 +1,267 @@
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <title>Найди пару</title>
+  </head>
+
+  <body>
+    <center><h1>Найди пару</h1></center>
+    <form name=MyForm align="center"> 
+      <div class="black" id="0" onclick="foo(this)"></div>
+      <div class="black" id="1" onclick="foo(this)"></div>
+      <div class="black" id="2" onclick="foo(this)"></div>
+      <div class="black" id="3" onclick="foo(this)"></div>
+	  <br />
+	  <div class="black" id="4" onclick="foo(this)"></div>
+      <div class="black" id="5" onclick="foo(this)"></div>
+      <div class="black" id="6" onclick="foo(this)"></div>
+      <div class="black" id="7" onclick="foo(this)"></div>
+	  <br />
+	  <div class="black" id="8" onclick="foo(this)"></div>
+      <div class="black" id="9" onclick="foo(this)"></div>
+      <div class="black" id="10" onclick="foo(this)"></div>
+      <div class="black" id="11" onclick="foo(this)"></div>
+	  <br />
+	  <div class="black" id="12" onclick="foo(this)"></div>
+      <div class="black" id="13" onclick="foo(this)"></div>
+      <div class="black" id="14" onclick="foo(this)"></div>
+      <div class="black" id="15" onclick="foo(this)"></div>
+	  <br />
+	  <br />
+	  
+	  <input type="button" value="СТАРТ" onclick="mov()">
+	  <br />
+	  <br />
+	  
+	  <input name=stopwatch size=10 value="00:00:00.00">  
+	</form>
+  </body>
+  
+<script>
+// Таймер
+// Переменные для таймера
+let base = 60; 
+let clocktimer;
+let dateObj;
+let dh;
+let dm; 
+let ds;
+let readout=''; 
+let h = 1; 
+let m = 1; 
+let tm = 1; 
+let s = 0; 
+let ts = 0; 
+let init = 0; 
+let ms = 0;
+
+// Функция очистки таймера
+function clr() { 
+  clearTimeout(clocktimer); 
+  h = 1; 
+  m = 1;
+  tm = 1;
+  s = 0;
+  ts = 0;
+  ms = 0; 
+  init = 0;
+  readout = '00:00:00.00'; 
+  document.MyForm.stopwatch.value=readout; 
+}
+
+// Функция таймер
+function timer() {
+  let cdateObj = new Date(); 
+  let t = (cdateObj.getTime() - dateObj.getTime()) - (s * 1000); 
+  
+  if (t > 999) { 
+    s++; 
+  } 
+  
+  if (s >= (m*base)) { 
+    ts = 0; 
+    m++; 
+  } else { 
+    ts = parseInt((ms/100) + s); 
+    if(ts>=base) {
+	  ts = ts -((m - 1) * base); 
+	} 
+  } 
+  
+  if (m>(h*base)) { 
+    tm=1; 
+    h++; 
+  } else { 
+    tm=parseInt((ms / 100) + m); 
+    if(tm>=base) { 
+	  tm = tm -((h - 1)*base); 
+	} 
+  } 
+  
+  ms = Math.round(t/10); 
+  
+  if (ms>99) {
+    ms=0;
+  } 
+  
+  if (ms === 0) {
+    ms='00';
+  }
+  
+  if (ms > 0 && ms <=9) { 
+    ms = '0' + ms; 
+  } 
+  
+  if (ts > 0) { 
+    ds = ts; 
+	if (ts<10) { 
+	  ds = '0'+ts; 
+	}
+  } else { 
+    ds = '00'; 
+  }
+  
+  dm = tm - 1; 
+  
+  if (dm > 0) { 
+    if (dm < 10) { 
+	  dm = '0'+dm; 
+	}
+  } else { 
+	dm = '00'; 
+  }
+	
+  dh=h-1; 
+  
+  if (dh > 0) { 
+    if ( dh < 10) { 
+	dh = '0'+dh; 
+	}
+  } else { 
+  dh = '00'; 
+  } 
+  
+  readout = dh + ':' + dm + ':' + ds + '.' + ms; 
+  
+  document.MyForm.stopwatch.value = readout; 
+  
+  clocktimer = setTimeout("timer()",1); 
+}
+
+// Запускает таймер
+function go(){
+  clr();
+  dateObj = new Date(); 
+  timer(); 
+  init = 1; 
+}
+
+// Останавливает таймер
+function stop(){
+  clearTimeout(clocktimer);
+  init = 0;
+}
+
+// Игра
+// Массив с цветами
+let arrClass = ["black", "red", "hotpink", "green", "yellow", "blue", "darkcyan", "gray", "seagreen"];
+// Массив с клетками
+let arrGame = [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8]; 
+// Переменная для запоминания количества пар открытых карточек
+let mem = 0;
+// Переменная для записи номера цвета предыдущего элемента
+let prevcl = 0;
+// Переменная для запоминания предыдущего элемента
+let prevel = null;
+
+// Функция, которая перемешивает массив
+function mix(mixArray) {
+  let index, valueIndex;  
+  
+  for (let i = 0; i <= mixArray.length - 1; i++) {
+    index = Math.floor(Math.random()*i);
+    valueIndex = mixArray[index];
+    mixArray[index] = mixArray[i];
+    mixArray[i] = valueIndex;
+  }
+
+return mixArray;
+}
+
+// Функция перекрашивания рубашки карточек
+function repaint() {
+  for (let i = 0; i <= 15; i++) {
+    let el = document.getElementById(i);
+    el.className = arrClass[0];
+  }
+}
+
+//Вывод результата
+function fin() {
+  let str = "Вы выйграли!\n Затраченное время: " + readout;
+  alert(str);
+}
+
+// Кнопка "Старт"
+function mov() {
+  // Обнуляем количество открытых карточек
+  mem = 0;
+  // Перекрашиваем карточки 
+  repaint();
+  // Перемешиваем массив
+  mix(arrGame); 
+  // Начало отсчета
+  go();
+}
+
+// Нажатие на карточку
+function foo(el) {
+  // Считываем id элемента
+  let id=parseInt(el.id);
+  // Считываем номер цвета 
+  let cl=arrGame[id];  
+  // Раскрашиваем элемент (открываем карточку)
+  for (i = 1; i<9; i++) {
+    if (cl === i) {
+      el.className = arrClass[i];
+      k = i;
+      break;
+    }
+  }
+
+  setTimeout(
+    function(){
+      // Проверяем есть ли открытая карточка с таким цветом
+      if (prevcl==0) {
+        // Открываем карточку
+        // Запоминаем номер цвета элемента (карточки)
+        prevcl = cl;
+        // Запоминаем элемент (карточку)
+        prevel = el;
+      } else if (cl === prevcl) {
+        // Оставляем карточки если они одинаковые
+        el.className = arrClass[k];
+        prevel.className = arrClass[k];
+        prevcl = 0;
+        prevel = null;
+        mem = mem + 1;
+        // Если все карточки открыты заканчиваем игру
+        if (mem === 8) {
+          stop();
+          fin();
+        }
+      } else {
+        // Схлопываем карточки если они разные
+        el.className = arrClass[0];
+        prevel.className = arrClass[0];
+        prevcl = 0;
+        prevel = null;
+      }
+    // Пауза чтобы видеть цвет открытой карточки
+    }, 
+  200);
+
+}
+
+</script>
+</html>
