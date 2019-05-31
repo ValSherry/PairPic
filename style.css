@@ -1,0 +1,66 @@
+body {
+	background-color:MintCream;}
+
+h1 {
+	color: SeaGreen;}
+
+.black {
+    width: 100px;
+    height: 100px;
+    display: inline-block;
+    background-image: 
+    linear-gradient(-45deg, transparent 40%, rgba(127, 255, 212,.7) 40%, rgba(127, 255, 212,.7) 60%, transparent 60%), 
+    linear-gradient(135deg, rgba(127, 255, 212,.7) 10%, transparent 10%),
+    linear-gradient(-45deg, rgba(127, 255, 212,.7) 10%, transparent 10%),
+    linear-gradient(45deg, transparent 40%, #66CDAA 40%, #66CDAA 60%, transparent 60%),
+    linear-gradient(45deg, #66CDAA 10%, transparent 10%),linear-gradient(-135deg, #66CDAA 10%, transparent 10%);
+    background-color: #FCFAFB;
+    background-size: 2em 2em;}
+
+.red {
+    width: 100px;
+    height: 100px;
+    display: inline-block;
+    background: red;}
+
+.hotpink {
+    width: 100px;
+    height: 100px;
+    display: inline-block;
+    background: HotPink;}
+
+.green {
+    width: 100px;
+    height: 100px;
+    display: inline-block;
+    background: green;}
+
+.yellow {
+    width: 100px;
+    height: 100px;
+    display: inline-block;
+    background: yellow;}
+
+.blue {
+    width: 100px;
+    height: 100px;
+    display: inline-block;
+    background: blue;}
+
+.darkcyan {
+    width: 100px;
+    height: 100px;
+    display: inline-block;
+    background: darkcyan;}
+
+.gray {
+    width: 100px;
+    height: 100px;
+    display: inline-block;
+    background: gray;}
+
+.seagreen {
+    width: 100px;
+    height: 100px;
+    display: inline-block;
+    background: seagreen;}
