@@ -7,25 +7,25 @@
   <body>
     <center><h1>Найди пару</h1></center>
     <form name=MyForm align="center"> 
-      <div class="black" id="0" onclick="foo(this)"></div>
-      <div class="black" id="1" onclick="foo(this)"></div>
-      <div class="black" id="2" onclick="foo(this)"></div>
-      <div class="black" id="3" onclick="foo(this)"></div>
+      <div class="black" id="0" onclick="foo(this);"></div>
+      <div class="black" id="1" onclick="foo(this);"></div>
+      <div class="black" id="2" onclick="foo(this);"></div>
+      <div class="black" id="3" onclick="foo(this);"></div>
 	  <br />
-	  <div class="black" id="4" onclick="foo(this)"></div>
-      <div class="black" id="5" onclick="foo(this)"></div>
-      <div class="black" id="6" onclick="foo(this)"></div>
-      <div class="black" id="7" onclick="foo(this)"></div>
+	  <div class="black" id="4" onclick="foo(this);"></div>
+      <div class="black" id="5" onclick="foo(this);"></div>
+      <div class="black" id="6" onclick="foo(this);"></div>
+      <div class="black" id="7" onclick="foo(this);"></div>
 	  <br />
-	  <div class="black" id="8" onclick="foo(this)"></div>
-      <div class="black" id="9" onclick="foo(this)"></div>
-      <div class="black" id="10" onclick="foo(this)"></div>
-      <div class="black" id="11" onclick="foo(this)"></div>
+	  <div class="black" id="8" onclick="foo(this);"></div>
+      <div class="black" id="9" onclick="foo(this);"></div>
+      <div class="black" id="10" onclick="foo(this);"></div>
+      <div class="black" id="11" onclick="foo(this);"></div>
 	  <br />
-	  <div class="black" id="12" onclick="foo(this)"></div>
-      <div class="black" id="13" onclick="foo(this)"></div>
-      <div class="black" id="14" onclick="foo(this)"></div>
-      <div class="black" id="15" onclick="foo(this)"></div>
+	  <div class="black" id="12" onclick="foo(this);"></div>
+      <div class="black" id="13" onclick="foo(this);"></div>
+      <div class="black" id="14" onclick="foo(this);"></div>
+      <div class="black" id="15" onclick="foo(this);"></div>
 	  <br />
 	  <br />
 	  
@@ -34,6 +34,7 @@
 	  <br />
 	  
 	  <input name=stopwatch size=10 value="00:00:00.00">  
+	  <p><span id="result_multi"></span></p>
 	</form>
   </body>
   
@@ -167,6 +168,8 @@ function stop(){
 let arrClass = ["black", "red", "hotpink", "green", "yellow", "blue", "darkcyan", "gray", "seagreen"];
 // Массив с клетками
 let arrGame = [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8]; 
+// Массив для проверки выбрана ли карточка
+let clic = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]; 
 // Переменная для запоминания количества пар открытых карточек
 let mem = 0;
 // Переменная для записи номера цвета предыдущего элемента
@@ -196,7 +199,14 @@ function repaint() {
   }
 }
 
-//Вывод результата
+// Функция востанавливает массив выбранных карточек
+function clicel() {
+  for (let i = 0; i <= 15; i++) {
+    clic[i] = 0;
+  }
+}
+
+// Вывод результата
 function fin() {
   let str = "Вы выйграли!\n Затраченное время: " + readout;
   alert(str);
@@ -210,6 +220,8 @@ function mov() {
   repaint();
   // Перемешиваем массив
   mix(arrGame); 
+  //
+  clicel();
   // Начало отсчета
   go();
 }
@@ -218,49 +230,54 @@ function mov() {
 function foo(el) {
   // Считываем id элемента
   let id=parseInt(el.id);
-  // Считываем номер цвета 
-  let cl=arrGame[id];  
-  // Раскрашиваем элемент (открываем карточку)
-  for (i = 1; i<9; i++) {
-    if (cl === i) {
-      el.className = arrClass[i];
-      k = i;
-      break;
-    }
-  }
-
-  setTimeout(
-    function(){
-      // Проверяем есть ли открытая карточка с таким цветом
-      if (prevcl==0) {
-        // Открываем карточку
-        // Запоминаем номер цвета элемента (карточки)
-        prevcl = cl;
-        // Запоминаем элемент (карточку)
-        prevel = el;
-      } else if (cl === prevcl) {
-        // Оставляем карточки если они одинаковые
-        el.className = arrClass[k];
-        prevel.className = arrClass[k];
-        prevcl = 0;
-        prevel = null;
-        mem = mem + 1;
-        // Если все карточки открыты заканчиваем игру
-        if (mem === 8) {
-          stop();
-          fin();
-        }
-      } else {
-        // Схлопываем карточки если они разные
-        el.className = arrClass[0];
-        prevel.className = arrClass[0];
-        prevcl = 0;
-        prevel = null;
+  if (clic[id] == 0) {
+    clic[id] = 1
+    // Считываем номер цвета 
+    let cl=arrGame[id];  
+    // Раскрашиваем элемент (открываем карточку)
+    for (i = 1; i<9; i++) {
+      if (cl === i) {
+        el.className = arrClass[i];
+        k = i;
+        break;
       }
-    // Пауза чтобы видеть цвет открытой карточки
-    }, 
-  200);
+    }
 
+    setTimeout(
+      function(){
+        // Проверяем есть ли открытая карточка с таким цветом
+        if (prevcl==0) {
+          // Открываем карточку
+          // Запоминаем номер цвета элемента (карточки)
+          prevcl = cl;
+          // Запоминаем элемент (карточку)
+          prevel = el;
+		  //
+        } else if (cl === prevcl) {
+          // Оставляем карточки если они одинаковые
+          el.className = arrClass[k];
+          prevel.className = arrClass[k];
+          prevcl = 0;
+          prevel = null;
+          mem = mem + 1;
+          // Если все карточки открыты заканчиваем игру
+          if (mem === 8) {
+            stop();
+            fin();
+          }
+	    } else {
+          // Схлопываем карточки если они разные
+          el.className = arrClass[0];
+          prevel.className = arrClass[0];
+		  clic[el.id] = 0;
+		  clic[prevel.id] = 0;
+     	  prevcl = 0;
+          prevel = null;
+        }
+      // Пауза чтобы видеть цвет открытой карточки
+      }, 
+    200);
+  }
 }
 
 </script>
